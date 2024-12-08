@@ -2,14 +2,10 @@ using System;
 
 namespace Shop.API.Mock.Models.Product;
 
-class FoodValue (
-    float protein,
-    float fat,
-    float carbohydrate,
-    float calories
-){
-    public float Protein { get; } = protein;
-    public float Fat { get; }= fat;
-    public float Carbohydrate { get; }= carbohydrate;
-    public float Calories { get; } = calories;
+public struct FoodValue {
+    public float Protein { get; set; } = 0;
+    public float Fat { get; set; } = 0;
+    public float Carbohydrate { get; set; } = 0;
+    public float Calories { get; set; } = 0;
+    public FoodValue(){}
 }
