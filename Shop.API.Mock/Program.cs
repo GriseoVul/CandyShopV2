@@ -5,23 +5,6 @@ using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
 
 var summaries = new[]
 {
@@ -60,16 +43,17 @@ var Products = Enumerable.Range(1, 400).Select(index =>
                         Value = RandomObj.Next(1, 1000).ToString()
                     }
                 ).ToArray();
-
+        var rating = RandomObj.Next(1, 100);
+        var name = string.Join("", RandomObj.GetItems(NameSyllables, RandomObj.Next(3,13)));
         return new Product
         (
             index,
-            string.Join("", RandomObj.GetItems(NameSyllables, RandomObj.Next(3, 15))),
+            string.Join("",$" ID:{index} ",$" R:{rating} ", name),
             "шт.",
             0,
             RandomObj.Next(500, 1000) / 100,
             RandomObj.Next(0, 100), 
-            RandomObj.Next(1, 100),
+            rating,
             RandomObj.GetItems(images, 3),
             "",
             RandomObj.GetItems(categories, 1)[0],
@@ -86,12 +70,30 @@ var Products = Enumerable.Range(1, 400).Select(index =>
             }           
         );
     }).OrderByDescending(Pr => Pr.Rating);
+var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container.
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
+builder.Services.AddSingleton(Products);
 
+var app = builder.Build();
 
-app.MapGet("/Product", ( string? Category, string? Name, SortOptions? Sort, int? Page = 1, int? PageLimit = 50) =>
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
 {
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+
+
+app.MapGet("/Product", ([FromServices]IOrderedEnumerable<Product> Products,string? Category, string? Name, SortOptions? Sort, int? Page = 1, int? PageLimit = 50) =>
+{
+    Console.WriteLine($"Call to product controller with params:\nPage={Page}\nPageLimit={PageLimit}\nProductsHash={Products.GetHashCode()}");
     var request = new ProductRequest()
         {
             Page = Page,
@@ -104,7 +106,12 @@ app.MapGet("/Product", ( string? Category, string? Name, SortOptions? Sort, int?
             }
         };
 
-    var ProdRequest = Products.TakeLast((request.Page ?? 1 - 1) * request.PageLimit??50 + request.PageLimit??50 );
+    var ProdRequest = request.Options.Category != null ? 
+        Products.Where(pr => pr.Category.Equals(request.Options.Category)):
+        Products;
+    
+    
+    ProdRequest = ProdRequest.Skip(Page??1 - 1 * PageLimit??50).Take(PageLimit??50);
     
     switch (request.Options.Sort)
     {
@@ -117,11 +124,13 @@ app.MapGet("/Product", ( string? Category, string? Name, SortOptions? Sort, int?
         break;
     }
 
+    var totalPages = Math.Ceiling((float)ProdRequest.Count() / request.PageLimit??50);
     return Results.Ok(new 
     {
+        ItemsPerPage = request.PageLimit,
         TotalItems = ProdRequest.Count(),
         CurrentPage = request.Page,
-        TotalPages = 10,
+        TotalPages = totalPages,
         Items = ProdRequest.ToArray()
     });
 })
