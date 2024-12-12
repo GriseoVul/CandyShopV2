@@ -48,9 +48,9 @@ builder.Services.AddSwaggerGen( c =>
 );
 // builder.Services.AddHealthChecks();
 
-
-builder.Services.AddSingleton<RandomData>();
 builder.Services.AddSingleton<MockAppContext>();
+
+
 builder.Services.AddSingleton<IProductService, ProductService>();
 builder.Services.AddSingleton<ICategoryService, CategoryService>();
 
@@ -96,6 +96,20 @@ if (app.Environment.IsDevelopment())
         }
         await next();
     });
+}
+
+using(var scope = app.Services.CreateScope() )
+{
+    var services = scope.ServiceProvider;
+
+    try
+    {
+        SeedData.Initialize(services);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex);
+    }
 }
 
 //app.MapOpenApi().CacheOutput();
