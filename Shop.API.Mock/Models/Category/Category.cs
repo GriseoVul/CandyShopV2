@@ -4,13 +4,9 @@ using Microsoft.AspNetCore.Authorization.Infrastructure;
 
 namespace Shop.API.Mock.Models.Category;
 
-public class Category
-(
-    string name,
-    string[] characteristics
-)
+public class Category()
 {
     public int Id { get;set; }
-    public string Name { get; set; } = name;
-    public string[] Characteristics { get; set; } = characteristics;
+    public string Name { get; set; } = String.Empty;
+    public string[] Characteristics { get; set; } = [];
 }

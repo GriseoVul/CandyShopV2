@@ -5,12 +5,12 @@ namespace Shop.API.Mock.Data;
 
 public class RandomData
 {
-    private List<string> _categories;
-    private List<string> _characteeristics;
-    private List<string> _nameSyllables;
-    private List<string> _imageUrls;
-    private List<string> _descriptions;
-    private HashSet<string> _stockKeepingUnits;
+    private readonly List<string> _categories;
+    private readonly List<string> _characteeristics;
+    private readonly List<string> _nameSyllables;
+    private readonly List<string> _imageUrls;
+    private readonly List<string> _descriptions;
+    private readonly HashSet<string> _stockKeepingUnits;
     public  Random RandomObj;
     public RandomData()
     {

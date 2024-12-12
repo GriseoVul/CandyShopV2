@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Caching.Memory;
 using Shop.API.Mock.Data;
+using Shop.API.Mock.Models.Category;
 using Shop.API.Mock.Models.Product;
 using Shop.API.Mock.Services;
 
@@ -51,6 +52,7 @@ builder.Services.AddSwaggerGen( c =>
 builder.Services.AddSingleton<RandomData>();
 builder.Services.AddSingleton<MockAppContext>();
 builder.Services.AddSingleton<IProductService, ProductService>();
+builder.Services.AddSingleton<ICategoryService, CategoryService>();
 
 //builder.Services.AddOpenApi();
 
@@ -104,7 +106,7 @@ app.UseRouting();
 // app.UseHealthChecks("/health");
 app.UseCors();
 
-app.MapGet("/Product", 
+app.MapGet("/Products", 
     [EndpointSummary("Get list of the products")]
     [EndpointDescription("This endpoint return object, that contains list of product\n")]
     [ProducesResponseType<List<Product>>(200)]
@@ -143,7 +145,7 @@ app.MapGet("/Product",
     return Results.Ok(new 
     {
         ItemsPerPage = request.PageLimit,
-        TotalItems = ProdRequest.Count(),
+        TotalItems = ProdRequest.Count,
         CurrentPage = request.Page,
         TotalPages = totalPages,
         Items = ProdRequest
@@ -152,7 +154,9 @@ app.MapGet("/Product",
 .WithName("GetAllProducts")
 .WithOpenApi();
 
-app.MapGet("/Product/{ID}", 
+app.MapGet("/Products/{ID}", 
+[EndpointSummary("Get product by ID")]
+[EndpointDescription("This endpoint return product object or NotFound code\n")]
 [ProducesResponseType<Product>(200)]
 [ProducesResponseType(404)]
 ( int ID, IProductService service) =>
@@ -165,6 +169,63 @@ app.MapGet("/Product/{ID}",
 .WithName("GetProductByID")
 .WithOpenApi();
 
+app.MapGet("/Categories", 
+    [EndpointSummary("Get list of the categories")]
+    [EndpointDescription("This endpoint return object, that contains list of categories\n")]
+    [ProducesResponseType<List<Product>>(200)]
+    (
+        ICategoryService service, 
+
+        int? Page = 1, 
+        int? PageLimit = 50
+    )=>
+{
+    
+    var Categories = service.GetAll();
+    
+    var totalPages = Math.Ceiling((float)Categories.Count / PageLimit??50);
+
+    return Results.Ok(new 
+    {
+        ItemsPerPage = PageLimit??50,
+        TotalItems = Categories.Count,
+        CurrentPage = Page??1,
+        TotalPages = totalPages,
+        Items = Categories
+    });
+})
+.WithName("GetAllCategories")
+.WithOpenApi();
+
+app.MapGet("/Categories/{ID:int}", 
+[EndpointSummary("Get category by ID")]
+[EndpointDescription("This endpoint return category object or NotFound code\n")]
+[ProducesResponseType<Category>(200)]
+[ProducesResponseType(404)]
+( int ID, ICategoryService service) =>
+{
+    var result = service.GetCategoryById(ID) ;
+    if (result == null)
+        return Results.NotFound( new { message = $"Category with ID: {ID} not found!"});
+    return Results.Ok(result);
+})
+.WithName("GetCategoryByID")
+.WithOpenApi();
+
+app.MapGet("/Categories/{Name}", 
+[EndpointSummary("Get category by name")]
+[EndpointDescription("This endpoint return category object or NotFound code\n")]
+[ProducesResponseType<Category>(200)]
+[ProducesResponseType(404)]
+( string Name, ICategoryService service) =>
+{
+    var result = service.GetCategoryByName(Name) ;
+    if (result == null)
+        return Results.NotFound( new { message = $"Category with Name: {Name} not found!"});
+    return Results.Ok(result);
+})
+.WithName("GetCategoryByName")
+.WithOpenApi();
 // app.MapGet("/HealthCheck", ( ) =>
 // {
 //     var result = GC.GetTotalMemory(true);

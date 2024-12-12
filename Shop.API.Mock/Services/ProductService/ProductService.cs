@@ -13,8 +13,8 @@ public class ProductService
 )
 : IProductService
 {
-    IMemoryCache _cache = cache;
-    MockAppContext _context = context;
+    readonly IMemoryCache _cache = cache;
+    readonly MockAppContext _context = context;
 
     public Product? GetProduct(int id)
     {
@@ -80,5 +80,11 @@ public class ProductService
             break;
         }
         return ProdRequest;
+    }
+
+    public async Task<Product> CreateProduct()
+    {
+        
+        return new Product();
     }
 }
