@@ -22,15 +22,25 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(builder => builder.
 builder.Services.AddSwaggerGen( c =>
 {
     c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo{Title = "Shop.Mock", Version="v1"});
-
+    
     c.AddServer(new Microsoft.OpenApi.Models.OpenApiServer
     {
-        Url = "https://ztrz483g-5267.euw.devtunnels.ms",
+        Url = "https://localhost:7283",
+        Description = "Dev tunnel local https"
+    });
+    c.AddServer(new Microsoft.OpenApi.Models.OpenApiServer
+    {
+        Url = "http://localhost:5267",
+        Description = "Dev tunnel local https"
+    });
+    c.AddServer(new Microsoft.OpenApi.Models.OpenApiServer
+    {
+        Url = "https://gc2lch20-5267.euw.devtunnels.ms/",
         Description = "Dev tunnel http"
     });
     c.AddServer(new Microsoft.OpenApi.Models.OpenApiServer
     {
-        Url = "https://ztrz483g-7283.euw.devtunnels.ms",
+        Url = "https://gc2lch20-7283.euw.devtunnels.ms/",
         Description = "Dev tunnel https"
     });
 }
@@ -42,7 +52,7 @@ builder.Services.AddSingleton<RandomData>();
 builder.Services.AddSingleton<MockAppContext>();
 builder.Services.AddSingleton<IProductService, ProductService>();
 
-builder.Services.AddOpenApi();
+//builder.Services.AddOpenApi();
 
 builder.Services.AddMemoryCache();
 
@@ -58,8 +68,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(
-        options =>
-            options.SwaggerEndpoint("/openapi/v1.json", "v1")
+        // options =>
+        //     options.SwaggerEndpoint("/openapi/v1.json", "v1")
     );
     app.Use(async (context, next) => 
     {
@@ -86,9 +96,9 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.MapOpenApi().CacheOutput();
+//app.MapOpenApi().CacheOutput();
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseRouting();
 // app.UseHealthChecks("/health");
