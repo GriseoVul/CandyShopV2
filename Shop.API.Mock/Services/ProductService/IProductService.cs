@@ -8,4 +8,5 @@ public interface IProductService
 {
     public Product? GetProduct(int id);
     public List<Product> GetProductsWithParams(ProductRequest request);
+    public int AddProduct(Product product);
 }

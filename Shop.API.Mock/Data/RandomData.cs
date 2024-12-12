@@ -1,12 +1,11 @@
 using System;
+using Shop.API.Mock.Models.Category;
 using Shop.API.Mock.Models.Product;
 
 namespace Shop.API.Mock.Data;
 
 public class RandomData
 {
-    private readonly List<string> _categories;
-    private readonly List<string> _characteeristics;
     private readonly List<string> _nameSyllables;
     private readonly List<string> _imageUrls;
     private readonly List<string> _descriptions;
@@ -21,22 +20,6 @@ public class RandomData
         {
             _stockKeepingUnits.Add( RandomObj.Next( 1_000_000, 9_999_999).ToString() );
         }
-
-        _categories = [
-            "шоколад", "мармелад", "карамель", 
-            "конфеты", "халва", "драже", 
-            "печенье", "пряники", "торты", 
-            "кексы", "вафли", "пирожные"
-        ];
-        _characteeristics = [
-            "Мощность", "Вес", "Объём", 
-            "Длина", "Ширина", "Высота", 
-            "Скорость", "Частота", "Температура", 
-            "Время работы", "Время зарядки", "Максимальная нагрузка", 
-            "Энергопотребление", "Класс энергоэффективности", "Уровень шума", 
-            "Рейтинг", "Количество функций", "Глубина", 
-            "Диаметр", "Площадь"
-        ];
         _nameSyllables = [
             " "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ",
             "ма", "ми", "му", "па", "пе", "по", "ра", "ре", "ро", "са", "се", "со", 
@@ -104,41 +87,13 @@ public class RandomData
     {
         return RandomObj.GetItems(_imageUrls.ToArray(), RandomObj.Next(2,5));
     } 
-    public ProductCharacteristic[] GetRandomProductCharacteristics()
+    public string GetRandomCategory(List<Category> categories)
     {
-        return Enumerable
-            .Range(1, 5)
-            .Select(index => 
-                new ProductCharacteristic ()
-                {
-                    Name = _characteeristics[ RandomObj.Next(1, _characteeristics.Count - 1) ],
-                    Value = RandomObj.Next(1, 1000).ToString()
-                }
-        ).ToArray();
-    }
-    public string GetRandomCategory()
-    {
-        return _categories[ RandomObj.Next(0, _categories.Count - 1) ];
+        return categories[ RandomObj.Next(0, categories.Count - 1) ].Name;
     }
     public string GetRandomAbout()
     {
         return _descriptions[ RandomObj.Next(0, _descriptions.Count - 1) ];
-    }
-    public ProductDescription GetRandomProductDescription()
-    {
-        return new ProductDescription() {
-                    Characterisitcs = GetRandomProductCharacteristics(),
-                    About = GetRandomAbout(),
-                    FoodValue = RandomObj.Next(0, 100) > 50 ? 
-                    null : 
-                    new FoodValue 
-                        {
-                            Protein = RandomObj.Next(100),
-                            Fat = RandomObj.Next(100),
-                            Carbohydrate = RandomObj.Next(100),
-                            Calories = RandomObj.Next(100)
-                        }
-                };
     }
     public string GetRandomSKU()
     {

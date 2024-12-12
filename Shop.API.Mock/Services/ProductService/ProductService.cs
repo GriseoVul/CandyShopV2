@@ -82,9 +82,11 @@ public class ProductService
         return ProdRequest;
     }
 
-    public async Task<Product> CreateProduct()
+    public int AddProduct(Product product)
     {
-        
-        return new Product();
+        var result = _context.Products.Count;
+        product.Id = result;
+        _context.Products.Add(product);
+        return result;
     }
 }
