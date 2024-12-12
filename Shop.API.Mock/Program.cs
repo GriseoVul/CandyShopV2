@@ -16,9 +16,27 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddCors(options => options.AddDefaultPolicy(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
+builder.Services.AddSwaggerGen( c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo{Title = "Shop.Mock", Version="v1"});
+
+    c.AddServer(new Microsoft.OpenApi.Models.OpenApiServer
+    {
+        Url = "https://ztrz483g-5267.euw.devtunnels.ms",
+        Description = "Dev tunnel http"
+    });
+    c.AddServer(new Microsoft.OpenApi.Models.OpenApiServer
+    {
+        Url = "https://ztrz483g-7283.euw.devtunnels.ms",
+        Description = "Dev tunnel https"
+    });
+}
+);
 // builder.Services.AddHealthChecks();
+
 
 builder.Services.AddSingleton<RandomData>();
 builder.Services.AddSingleton<MockAppContext>();
@@ -27,6 +45,7 @@ builder.Services.AddSingleton<IProductService, ProductService>();
 builder.Services.AddOpenApi();
 
 builder.Services.AddMemoryCache();
+
 
 builder.Services.AddOutputCache( options =>
     options.AddBasePolicy(policy => policy.Expire(TimeSpan.FromMinutes(5)))
@@ -42,13 +61,38 @@ if (app.Environment.IsDevelopment())
         options =>
             options.SwaggerEndpoint("/openapi/v1.json", "v1")
     );
+    app.Use(async (context, next) => 
+    {
+        var host = context.Request.Host.Value;
+        if (!string.IsNullOrEmpty(host))
+        {
+            context.Response.Headers.Add("X-Forwarded-Host", host);
+        }
+        if(context.Request.Path.StartsWithSegments("/swagger"))
+        {
+            var serverUrl = $"{context.Request.Scheme}://{context.Request.Host.Value}";
+            var swaggerJson = new 
+            {
+                swagger = "2.0",
+                info = new {title = "Candyshop API", version="v1"},
+                host = context.Request.Host.Value,
+                basePath = "/",
+                schemes = new[] { context.Request.Scheme }
+            };
+            var json = System.Text.Json.JsonSerializer.Serialize(swaggerJson);
+            await context.Response.WriteAsync(json);
+        }
+        await next();
+    });
 }
 
 app.MapOpenApi().CacheOutput();
 
 app.UseHttpsRedirection();
 
+app.UseRouting();
 // app.UseHealthChecks("/health");
+app.UseCors();
 
 app.MapGet("/Product", 
     [EndpointSummary("Get list of the products")]
@@ -84,7 +128,7 @@ app.MapGet("/Product",
 
     var ProdRequest = service.GetProductsWithParams(request);
     
-    var totalPages = Math.Ceiling((float)ProdRequest.Count() / request.PageLimit);
+    var totalPages = Math.Ceiling((float)ProdRequest.Count / request.PageLimit);
 
     return Results.Ok(new 
     {
