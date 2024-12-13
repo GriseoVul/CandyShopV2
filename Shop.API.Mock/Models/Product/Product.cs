@@ -15,7 +15,7 @@ public class Product
     public string PromoTag { get; set; }
     public string Category { get; set; }
     public ProductDescription Description { get; set; }
-    public string StockKeepingUnit { get; set; }
+    public string SKU { get; set; }
     public float TotalPrice => Price - (Price / 100 * Discount);
     public bool InStock => Count > 0;
 

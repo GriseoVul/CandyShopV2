@@ -61,7 +61,7 @@ public static class SeedData
                 PromoTag = "",
                 //category
                 //Descriptiton
-                StockKeepingUnit = _randomData.GetRandomSKU()
+                SKU = _randomData.GetRandomSKU()
             };
             var randomCategory = _categoryService.GetCategoryById(_randomData.RandomObj.Next(1, _context.Categories.Count - 1));
 

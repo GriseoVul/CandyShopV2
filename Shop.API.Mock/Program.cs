@@ -154,7 +154,7 @@ app.MapGet("/Products",
 
     var ProdRequest = service.GetProductsWithParams(request);
     
-    var totalPages = Math.Ceiling((float)ProdRequest.Count / request.PageLimit);
+    var totalPages = 5;//Math.Ceiling((float)ProdRequest.Count / request.PageLimit);
 
     return Results.Ok(new 
     {
@@ -168,7 +168,7 @@ app.MapGet("/Products",
 .WithName("GetAllProducts")
 .WithOpenApi();
 
-app.MapGet("/Products/{ID}", 
+app.MapGet("/Products/{ID:int}", 
 [EndpointSummary("Get product by ID")]
 [EndpointDescription("This endpoint return product object or NotFound code\n")]
 [ProducesResponseType<Product>(200)]
@@ -181,6 +181,21 @@ app.MapGet("/Products/{ID}",
     return Results.Ok(result);
 })
 .WithName("GetProductByID")
+.WithOpenApi();
+
+app.MapGet("/Products/{SKU}", 
+[EndpointSummary("Get product by SKU")]
+[EndpointDescription("This endpoint return product object or NotFound code\n")]
+[ProducesResponseType<Product>(200)]
+[ProducesResponseType(404)]
+( string SKU, IProductService service) =>
+{
+    var result = service.GetProductBySKU(SKU) ;
+    if (result == null)
+        return Results.NotFound( new { message = $"Product with SKU: {SKU} not found!"});
+    return Results.Ok(result);
+})
+.WithName("GetProductBySKU")
 .WithOpenApi();
 
 app.MapGet("/Categories", 

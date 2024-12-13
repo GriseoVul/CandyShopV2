@@ -16,6 +16,11 @@ public class ProductService
     readonly IMemoryCache _cache = cache;
     readonly MockAppContext _context = context;
 
+    public Product? GetProductBySKU(string sku)
+    {
+        var result = _context.Products.FirstOrDefault(pr => String.Equals(pr.SKU, sku, StringComparison.InvariantCultureIgnoreCase));
+        return result;
+    }
     public Product? GetProduct(int id)
     {
         _cache.TryGetValue(id, out Product? result);
@@ -84,7 +89,7 @@ public class ProductService
 
     public int AddProduct(Product product)
     {
-        var result = _context.Products.Count;
+        var result = _context.Products.Count + 1;
         product.Id = result;
         _context.Products.Add(product);
         return result;
