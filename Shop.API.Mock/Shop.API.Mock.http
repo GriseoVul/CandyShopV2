@@ -1,6 +1,8 @@
 @Shop.API.Mock_HostAddress = http://localhost:5267
 
-GET {{Shop.API.Mock_HostAddress}}/weatherforecast/
+GET {{Shop.API.Mock_HostAddress}}/products
 Accept: application/json
 
 ###
+
+GET https://random-image-pepebigotes.vercel.app/api/skeleton-random-image
