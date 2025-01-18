@@ -14,6 +14,9 @@ public class Category
     [Required]
     [StringLength(50)]
     public string Name { get; set; } = String.Empty;
+
+    [StringLength(2_000)]
+    public string Description { get; set; } = String.Empty;
     
     public ICollection<CategoryCharacteristic> Characteristics { get; set; } = [];
 }
