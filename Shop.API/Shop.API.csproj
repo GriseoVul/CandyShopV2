@@ -17,7 +17,6 @@
     <Folder Include="Data\Migrations\" />
     <Folder Include="Data\Profiles\" />
     <Folder Include="Models/Order/" />
-    <Folder Include="Models/Promotion/" />
     <Folder Include="Services\" />
   </ItemGroup>
 

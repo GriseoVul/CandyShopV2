@@ -2,7 +2,7 @@ using System;
 
 namespace Shop.API.Models.Product
 {
-    public class ProductDto
+    public class ProductWithoutDescriptionDTO
     {
         public int Id { get; set; } = 0;
         public string Name { get; set; } = String.Empty;
@@ -14,10 +14,7 @@ namespace Shop.API.Models.Product
         public string[] ImageUrls { get; set; } = [];
         public string PromoTag { get; set; } = String.Empty;
         public string Category { get; set; } = String.Empty;
-        public ProductDescriptionDTO Description { get; set; } = null!;
         public string SKU { get; set; } = String.Empty;
         public float TotalPrice => Price - (Price / 100 * Discount);
-        public bool InStock => Count > 0;
-
     }
 }

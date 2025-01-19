@@ -1,11 +1,12 @@
-namespace Shop.API.Enum;
-
-public enum OrderStatus
+namespace Shop.API.Enum
 {
-    None, 
-    Pending,
-    Delivering,
-    Done,
-    Closed,
-    Canseled
+    public enum OrderStatus
+    {
+        None, 
+        Pending,
+        Delivering,
+        Done,
+        Closed,
+        Canseled
+    }
 }

@@ -1,10 +1,11 @@
 using System;
 
-namespace Shop.API.Mock.Data;
-
-public enum SortOptions
+namespace Shop.API.Mock.Data
 {
-    None,
-    PriceDescending,
-    PriceAscending
+    public enum SortOptions
+    {
+        None,
+        PriceDescending,
+        PriceAscending
+    }
 }

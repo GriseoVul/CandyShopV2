@@ -1,15 +1,13 @@
-using Microsoft.EntityFrameworkCore;
+using System;
 
-namespace Shop.API.Entities.Product
+namespace Shop.API.Models.Product
 {
-
-    [Owned]
-    public class FoodValue
+    public struct FoodValueDTO
     {
         public float Protein { get; set; } = 0;
         public float Fat { get; set; } = 0;
         public float Carbohydrate { get; set; } = 0;
         public float Calories { get; set; } = 0;
-        public FoodValue(){}
+        public FoodValueDTO(){}
     }
 }
