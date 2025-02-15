@@ -61,6 +61,33 @@ public class CategoryService
             throw ;
         }
     }
+    public async Task<Category> GetByNameAsync(string name)
+    {
+
+         if(_cache.TryGetValue(name, out Category? category))
+        {
+            _logger.LogInformation("Category {id} found in cache", name);
+            return category;
+        }
+
+        try
+        {
+            category = await _context.Categories.FindAsync(name);
+            if(category != null)
+            {
+                _logger.LogInformation("Category {name} found in database", name);
+                _cache.Set(name, category, TimeSpan.FromMinutes(5));
+                return category;
+            }
+            _logger.LogWarning("Category {name} not found", name);
+            throw new KeyNotFoundException($"Category {name} not found");
+        }
+        catch( Exception e)
+        {
+            _logger.LogError(e, "Error while getting product {name}", name);
+            throw ;
+        }
+    }
 
     public async Task<IQueryable<Category>> GetAllAsync()
     {

@@ -3,7 +3,6 @@ using System;
 namespace Shop.API.Services.Implementations;
 
 using System.Linq.Expressions;
-using System.Runtime.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Caching.Memory;
@@ -20,6 +19,7 @@ public class ProductService
     private readonly ApplicationDBContext _context = context;
     private readonly IMemoryCache _cache = cache;
     private readonly ILogger<ProductService> _logger = logger;
+   
 
     public async Task<Product> CreateAsync(Product entity)
     {
