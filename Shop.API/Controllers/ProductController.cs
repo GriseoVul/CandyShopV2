@@ -19,13 +19,13 @@ namespace Shop.API.Controllers
         private readonly IProductService _productService = productService;
         private readonly IMapper _mapper = mapper;
 
-        [HttpGet]
-        public async Task<IActionResult> GetProducts()
-        {
-            var products = await _productService.GetAllAsync();
-            var productDtos = _mapper.Map<ProductDto>( products );
-            return Ok(productDtos);
-        }
+        // [HttpGet]
+        // public async Task<IActionResult> GetProducts()
+        // {
+        //     var products = await _productService.GetAllAsync();
+        //     var productDtos = _mapper.Map<ProductDto>( products );
+        //     return Ok(productDtos);
+        // }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetProduct(int id)

@@ -1,4 +1,5 @@
 using System;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Shop.API.Data;
 using Shop.API.Services.Implementations;
@@ -10,6 +11,14 @@ public static class ServiceExtensions
 {
     public static IServiceCollection AddCustomServices(this IServiceCollection services)
     {
+        var AutoMapperConfig = new MapperConfiguration(cfg =>
+        {
+            cfg.AddProfile<Data.Profiles.ProductProfile>();
+            cfg.AddProfile<Data.Profiles.CategoryProfile>();
+        });
+
+        services.AddAutoMapper(typeof(ServiceExtensions));
+
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
