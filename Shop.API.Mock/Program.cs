@@ -44,6 +44,16 @@ builder.Services.AddSwaggerGen( c =>
         Url = "https://gc2lch20-7283.euw.devtunnels.ms/",
         Description = "Dev tunnel https"
     });
+    c.AddServer(new Microsoft.OpenApi.Models.OpenApiServer
+    {
+        Url = "https://nbtl5gqd-5267.euw.devtunnels.ms/",
+        Description = "Dev tunnel http"
+    });
+    c.AddServer(new Microsoft.OpenApi.Models.OpenApiServer
+    {
+        Url = "https://nbtl5gqd-5267.euw.devtunnels.ms/",
+        Description = "Dev tunnel https"
+    });
 }
 );
 // builder.Services.AddHealthChecks();
