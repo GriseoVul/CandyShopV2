@@ -2,16 +2,16 @@
     "configurations": [
         
         {
-            "name": "C#: Shop.API.Mock [Default Configuration]",
+            "name": "C#: Shop.API [Default Configuration]",
             "type": "dotnet",
             "request": "launch",
-            "projectPath": "${workspaceFolder}/Shop.API.Mock/Shop.API.Mock.csproj"
+            "projectPath": "${workspaceFolder}/Shop.API/Shop.API.csproj"
         },
         {
-            "name": "C#: Shop.API.Mock [https]",
+            "name": "C#: Shop.API [https]",
             "type": "dotnet",
             "request": "launch",
-            "projectPath": "${workspaceFolder}/Shop.API.Mock/Shop.API.Mock.csproj",
+            "projectPath": "${workspaceFolder}/Shop.API/Shop.API.csproj",
             "launchConfigurationId": "TargetFramework=;https"
         }
     ]

@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,7 @@ namespace Shop.API.Controllers
     //TODO add mapping
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController(
+    public class ProductsController(
         IProductService productService,
         IMapper mapper
     ) : ControllerBase
@@ -26,7 +27,7 @@ namespace Shop.API.Controllers
             return Ok(productDtos);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetProduct(int id)
         {            
             try
@@ -40,7 +41,7 @@ namespace Shop.API.Controllers
                 return NotFound(e.Message);
             }
         }
-        [HttpGet("{SKU:string}")]
+        [HttpGet("{SKU}")]
         public async Task<IActionResult> GetProduct(string SKU)
         {
             try
@@ -53,6 +54,11 @@ namespace Shop.API.Controllers
             {
                 return NotFound(e.Message);
             }
+        }
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            return Ok("Hello World");
         }
     }
 }

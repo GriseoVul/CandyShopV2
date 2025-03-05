@@ -8,7 +8,7 @@ namespace Shop.API.Controllers
     //TODO add mapping
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoryController(ICategoryService categoryService) : ControllerBase
+    public class CategoriesController(ICategoryService categoryService) : ControllerBase
     {
         private readonly ICategoryService _categoryService = categoryService;
 
@@ -19,7 +19,7 @@ namespace Shop.API.Controllers
             return Ok(categories);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetCategory(int id)
         {
             try
@@ -32,7 +32,7 @@ namespace Shop.API.Controllers
                 return NotFound(e.Message);
             }
         }
-        [HttpGet("{name:string}")]
+        [HttpGet("{name}")]
         public async Task<IActionResult> GetCategory(string name)
         {
             try

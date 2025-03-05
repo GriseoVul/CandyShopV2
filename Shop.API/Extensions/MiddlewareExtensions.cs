@@ -11,11 +11,11 @@ public static class MiddlewareExtensions
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Shop.API v1");
-                c.RoutePrefix = string.Empty;
+                // c.SwaggerEndpoint("/swagger/v1/swagger.json", "Shop.API v1");
+                // c.RoutePrefix = string.Empty;
             });
         }
-        
+
         app.UseHttpsRedirection();
         app.UseCors("AllowAllOrigins");
         app.UseAuthorization();
