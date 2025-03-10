@@ -17,6 +17,7 @@ public static class ServiceExtensions
             cfg.AddProfile<Data.Profiles.CategoryProfile>();
         });
 
+        
         services.AddAutoMapper(typeof(ServiceExtensions));
 
         services.AddControllers();

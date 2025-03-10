@@ -8,14 +8,26 @@ namespace Shop.API.Controllers
     //TODO add mapping
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriesController(ICategoryService categoryService) : ControllerBase
+    public class CategoriesController(
+        ICategoryService categoryService,
+        ILogger logger
+        ) : ControllerBase
     {
         private readonly ICategoryService _categoryService = categoryService;
-
+        private readonly ILogger _logger = logger;
         [HttpGet]
         public async Task<IActionResult> GetCategories()
         {
+            _logger.LogInformation("Getting all categories");
             var categories = await _categoryService.GetAllAsync();
+
+            if(categories is null) 
+            {
+                _logger.LogInformation("No categories found!");
+                return NotFound("No categories");
+            }
+                
+
             return Ok(categories);
         }
 

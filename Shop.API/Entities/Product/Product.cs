@@ -37,6 +37,9 @@ namespace Shop.API.Entities.Product
 
         [Required]
         public string CategoryName { get; set; } = String.Empty;
+        
+        [ForeignKey("CategoryName")]
+        public Category.Category Category { get; set; } = null!;
 
         [ForeignKey("DescriptionId")]
         public ProductDescription Description { get; set; } = null!;

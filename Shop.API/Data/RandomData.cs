@@ -1,8 +1,8 @@
 using System;
-using Shop.API.Mock.Models.Category;
-using Shop.API.Mock.Models.Product;
+using Shop.API.Entities.Category;
+using Shop.API.Entities.Product;
 
-namespace Shop.API.Mock.Data
+namespace Shop.API.Data
 {
     public class RandomData
     {

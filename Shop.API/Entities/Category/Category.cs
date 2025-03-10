@@ -19,5 +19,7 @@ namespace Shop.API.Entities.Category
         public string Description { get; set; } = String.Empty;
     
         public ICollection<CategoryCharacteristic> Characteristics { get; set; } = [];
+
+        public ICollection<Product.Product> Products { get; set; } = [];
     }
 }

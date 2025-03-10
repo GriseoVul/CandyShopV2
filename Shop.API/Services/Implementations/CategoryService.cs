@@ -91,7 +91,7 @@ public class CategoryService
 
     public async Task<IQueryable<Category>> GetAllAsync()
     {
-         if(_cache.TryGetValue("AllCategories", out IQueryable<Category>? categories))
+        if(_cache.TryGetValue("AllCategories", out IQueryable<Category>? categories))
         {
             _logger.LogInformation("AllCategories found in cache");
             return categories;

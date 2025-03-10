@@ -1,10 +1,12 @@
 using System;
+using Microsoft.OpenApi.Writers;
+using Shop.API.Data;
 
 namespace Shop.API.Extensions;
 
 public static class MiddlewareExtensions
 {
-    public static IApplicationBuilder UseCustomMiddleware(this WebApplication app, IHostEnvironment env)
+    public static async Task<IApplicationBuilder> UseCustomMiddlewareAsync(this WebApplication app, IHostEnvironment env)
     {
         if (env.IsDevelopment())
         {
@@ -14,6 +16,12 @@ public static class MiddlewareExtensions
                 // c.SwaggerEndpoint("/swagger/v1/swagger.json", "Shop.API v1");
                 // c.RoutePrefix = string.Empty;
             });
+            using (var scope = app.Services.CreateScope()) 
+            {
+                var context = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
+                await SeedData.Initialize( context );
+            }
+            
         }
         app.Use(
             async (context, next) =>
