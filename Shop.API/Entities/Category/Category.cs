@@ -7,6 +7,12 @@ namespace Shop.API.Entities.Category
 {
     public class Category
     {
+        public Category() {}
+        public Category(string name, string description)
+        {
+            Name = name;
+            Description = description;
+        }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get;set; }

@@ -10,11 +10,11 @@ namespace Shop.API.Controllers
     [ApiController]
     public class CategoriesController(
         ICategoryService categoryService,
-        ILogger logger
+        ILogger<CategoriesController> logger
         ) : ControllerBase
     {
         private readonly ICategoryService _categoryService = categoryService;
-        private readonly ILogger _logger = logger;
+        private readonly ILogger<CategoriesController> _logger = logger;
         [HttpGet]
         public async Task<IActionResult> GetCategories()
         {

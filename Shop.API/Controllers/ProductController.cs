@@ -13,19 +13,21 @@ namespace Shop.API.Controllers
     [ApiController]
     public class ProductsController(
         IProductService productService,
-        IMapper mapper
+        IMapper mapper,
+        ILogger<ProductsController> logger
     ) : ControllerBase
     {
         private readonly IProductService _productService = productService;
         private readonly IMapper _mapper = mapper;
+        private readonly ILogger<ProductsController> _logger = logger;
 
-        // [HttpGet]
-        // public async Task<IActionResult> GetProducts()
-        // {
-        //     var products = await _productService.GetAllAsync();
-        //     var productDtos = _mapper.Map<ProductDto>( products );
-        //     return Ok(productDtos);
-        // }
+        [HttpGet]
+        public async Task<IActionResult> GetProducts()
+        {
+            var products = await _productService.GetAllAsync();
+            var productDtos = _mapper.Map<List<ProductDto>>( products );
+            return Ok(productDtos);
+        }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetProduct(int id)
@@ -54,11 +56,6 @@ namespace Shop.API.Controllers
             {
                 return NotFound(e.Message);
             }
-        }
-        [HttpGet]
-        public async Task<IActionResult> Index()
-        {
-            return Ok("Hello World");
         }
     }
 }

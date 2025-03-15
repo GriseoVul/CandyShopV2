@@ -1,0 +1,23 @@
+{
+  "Version": 1,
+  "Hash": "V8SthFQ6kirX7nQWrGFrW8WZ1dJFZBk2BWhGoeiK9JU=",
+  "Source": "Shop.API.Mock",
+  "BasePath": "_content/Shop.API.Mock",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [
+    {
+      "Identity": "e:\\Files\\code\\Csharp\\CandyShopV2\\Shop.API\\Shop.API.csproj",
+      "Version": 2,
+      "Source": "Shop.API",
+      "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
+      "AdditionalPublishProperties": "",
+      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework",
+      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
+      "AdditionalBuildProperties": "",
+      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework"
+    }
+  ],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
